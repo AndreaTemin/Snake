@@ -11,7 +11,6 @@ def main():
     game = Game()
 
     while True:
-        # game.handle_events()
         game.handle_evets()
         game.update()
 

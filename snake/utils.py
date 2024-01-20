@@ -17,3 +17,14 @@ DIRECTIONS = {
     "LEFT" : 2,
     "RIGHT" : 3
 }
+
+# given a position (x,y) will give the center of the relative box
+def fit_the_box(*position:(int,int)):
+    box = GAME_CONFIG["GRID_SIZE"]
+    
+    x = position[0]//box*box + box//2
+    y = position[1]//box*box + box//2
+
+    return x, y
+
+    
