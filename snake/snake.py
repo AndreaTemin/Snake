@@ -1,5 +1,5 @@
 import random
-from utils import GAME_CONFIG, DIRECTIONS
+from utils import GAME_CONFIG, DIRECTIONS, fit_the_box
 
 UP = 0
 DOWN = 1
@@ -10,7 +10,8 @@ RIGHT = 3
 class Snake:
     def __init__(self):
         self.length = 1
-        self.positions = [((GAME_CONFIG['WIDTH']//2), (GAME_CONFIG["HEIGHT"] // 2))]
+        center = (GAME_CONFIG['WIDTH']//2), (GAME_CONFIG["HEIGHT"] // 2)
+        self.positions = [fit_the_box(*center)]
         self.direction = random.choice([UP, DOWN, LEFT, RIGHT])  # 0: up, 1:down, 2:left, 3:right
 
     def get_head_position(self):
@@ -36,11 +37,7 @@ class Snake:
 
 
 if __name__ == "__main__":
-    s = Snake()
-    print(s.get_head_position())
-    s.direction = UP
-    s.move()
-    print(s.get_head_position())
+    pass
 
 
 

@@ -3,7 +3,7 @@ import pygame
 import sys 
 import random
 from snake import Snake
-from utils import GAME_CONFIG, DIRECTIONS
+from utils import GAME_CONFIG, DIRECTIONS,fit_the_box
 
 class Game:
     def __init__(self):
@@ -12,7 +12,7 @@ class Game:
 
     def place_food(self):
         x,y = random.randint(0,GAME_CONFIG["WIDTH"]), random.randint(0,GAME_CONFIG["HEIGHT"])
-        return (x,y)
+        return fit_the_box(x,y)
     
     def render(self, surface):
         # Draw Snake
@@ -42,7 +42,6 @@ class Game:
                 elif (event.key == pygame.K_DELETE):
                     self.snake.reset()
                     self.food = self.place_food()
-        pass
 
     def update(self):
         self.snake.move()
