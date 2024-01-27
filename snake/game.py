@@ -3,7 +3,7 @@ import pygame
 import sys 
 import random
 from snake import Snake
-from utils import GAME_CONFIG, DIRECTIONS,fit_the_box
+from utils import GAME_CONFIG, DIRECTIONS, fit_the_box
 
 class Game:
     def __init__(self):
@@ -15,14 +15,22 @@ class Game:
         return fit_the_box(x,y)
     
     def render(self, surface):
-        # Draw Snake
-        for pos in self.snake.positions:
-            pygame.draw.rect(surface, GAME_CONFIG["GREEN"],
+        # Draw Snake head
+        pygame.draw.rect(surface, GAME_CONFIG["HEAD_COLOR"],
+                             (*self.snake.get_head_position(), GAME_CONFIG["SNAKE_SIZE"], GAME_CONFIG["SNAKE_SIZE"]))
+        # Draw rest of Snake
+        for i, pos in enumerate(self.snake.positions[1:]):
+            
+            color = (5, GAME_CONFIG["SNAKE_COLOR"][1]-i*1, 5)
+            pygame.draw.rect(surface, color, # this will change the color of the snake gradually 
                              (*pos, GAME_CONFIG["SNAKE_SIZE"], GAME_CONFIG["SNAKE_SIZE"]))
 
         # Draw food
         pygame.draw.rect(surface, GAME_CONFIG["RED"],
                           (*self.food,GAME_CONFIG["SNAKE_SIZE"], GAME_CONFIG["SNAKE_SIZE"]))
+
+    def game_over(self):
+        self.__init__()
 
     def handle_evets(self):
         for event in pygame.event.get():
@@ -45,11 +53,18 @@ class Game:
 
     def update(self):
         self.snake.move()
-        
-        if self.snake.get_head_position() == self.food:
+        head = self.snake.get_head_position()
+
+        # event eating food
+        if head == self.food:
             self.snake.length += 1
             self.snake.positions.append(self.food)
             self.food = self.place_food()
             
-
+        # event out of border
+        if not (GAME_CONFIG['WIDTH'] >= head[0] >= 0 and GAME_CONFIG['HEIGHT'] >= head[1] >= 0):
+            self.game_over()
+        
+            
+        
         

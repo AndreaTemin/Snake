@@ -5,7 +5,7 @@ from utils import GAME_CONFIG
 def main():
     pygame.init()
     clock = pygame.time.Clock()
-    screen = pygame.display.set_mode((600, 400), 0, 32)
+    screen = pygame.display.set_mode((GAME_CONFIG['WIDTH'], GAME_CONFIG['HEIGHT']), 0, 32)
     pygame.display.set_caption("Snake Game")
 
     game = Game()
