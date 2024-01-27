@@ -38,14 +38,22 @@ class Game:
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
-                if (event.key == pygame.K_UP and self.snake.direction != DIRECTIONS["DOWN"]):
+                if (event.key == pygame.K_UP and
+                   (self.snake.direction != DIRECTIONS["UP"] and self.snake.direction != DIRECTIONS["DOWN"])):
                     self.snake.direction = DIRECTIONS["UP"]
-                elif (event.key == pygame.K_DOWN and self.snake.direction != DIRECTIONS["UP"]):
+                    return
+                elif (event.key == pygame.K_DOWN and
+                     (self.snake.direction != DIRECTIONS["DOWN"] and self.snake.direction != DIRECTIONS["UP"])):
                     self.snake.direction = DIRECTIONS["DOWN"]
-                elif (event.key == pygame.K_LEFT and self.snake.direction != DIRECTIONS["RIGHT"]):
+                    return
+                elif (event.key == pygame.K_LEFT and
+                     (self.snake.direction != DIRECTIONS["RIGHT"] and self.snake.direction != DIRECTIONS["LEFT"])):
                     self.snake.direction = DIRECTIONS["LEFT"]
-                elif (event.key == pygame.K_RIGHT and self.snake.direction != DIRECTIONS["LEFT"]):
+                    return
+                elif (event.key == pygame.K_RIGHT and
+                     (self.snake.direction != DIRECTIONS["LEFT"] and self.snake.direction != DIRECTIONS["RIGHT"])):
                     self.snake.direction = DIRECTIONS["RIGHT"]
+                    return
 
                 elif (event.key == pygame.K_DELETE):
                     self.snake.reset()
@@ -55,16 +63,19 @@ class Game:
         self.snake.move()
         head = self.snake.get_head_position()
 
+            
+        # hitting the border
+        if not (GAME_CONFIG['WIDTH'] >= head[0] >= 0 and GAME_CONFIG['HEIGHT'] >= head[1] >= 0):
+            self.game_over()
+
+        if head in self.snake.positions[2:]:
+            self.game_over()
+        
+            
         # event eating food
         if head == self.food:
             self.snake.length += 1
             self.snake.positions.append(self.food)
             self.food = self.place_food()
-            
-        # event out of border
-        if not (GAME_CONFIG['WIDTH'] >= head[0] >= 0 and GAME_CONFIG['HEIGHT'] >= head[1] >= 0):
-            self.game_over()
-        
-            
         
         

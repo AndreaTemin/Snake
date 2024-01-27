@@ -17,6 +17,9 @@ class Snake:
     def get_head_position(self):
         return self.positions[0]
     
+    def get_tail_positions(self):
+        return self.positions[1:]
+    
     def move(self):
         current = self.get_head_position()
         x, y = current
