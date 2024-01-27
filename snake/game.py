@@ -44,6 +44,13 @@ class Game:
                     self.food = self.place_food()
 
     def update(self):
+        prev_position = self.snake.get_head_position()
         self.snake.move()
+        
+        if self.snake.get_head_position() == self.food:
+            self.snake.length += 1
+            self.snake.positions.append(self.food)
+            self.food = self.place_food()
+            
 
         
