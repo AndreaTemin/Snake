@@ -7,7 +7,8 @@ GAME_CONFIG = {
     'SNAKE_SIZE': 20,
     'DARK_GRAY': (10, 30, 30),
     'WHITE': (255, 255, 255),
-    'GREEN' : (5, 240, 5),
+    'SNAKE_COLOR' : (5, 240, 5),
+    'HEAD_COLOR' : (15, 200, 15),
     'RED' : (240, 5, 5)
 }
 
