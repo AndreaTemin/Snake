@@ -20,7 +20,7 @@ class Game:
                              (*self.snake.get_head_position(), GAME_CONFIG["SNAKE_SIZE"], GAME_CONFIG["SNAKE_SIZE"]))
         # Draw rest of Snake
         for i, pos in enumerate(self.snake.positions[1:]):
-            
+            # this will change the color of the snake gradually
             color = (5, GAME_CONFIG["SNAKE_COLOR"][1]-i*1, 5)
             pygame.draw.rect(surface, color, # this will change the color of the snake gradually 
                              (*pos, GAME_CONFIG["SNAKE_SIZE"], GAME_CONFIG["SNAKE_SIZE"]))
