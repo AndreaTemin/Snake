@@ -1,3 +1,4 @@
+from time import sleep
 import pygame
 from game import Game
 from utils import GAME_CONFIG
@@ -11,14 +12,17 @@ def main():
     game = Game()
 
     while True:
-        game.handle_evets()
+        game.handle_events()
         game.update()
 
         screen.fill(GAME_CONFIG["DARK_GRAY"])
         game.render(screen)
+        
         pygame.display.update()
 
-        clock.tick(10)
+        clock.tick(9995)
+        pygame.time.delay(100)
+        
 
 
 if __name__ == "__main__":

@@ -24,14 +24,16 @@ class Snake:
         current = self.get_head_position()
         x, y = current
 
+        grid_size = GAME_CONFIG["GRID_SIZE"]
+
         if self.direction == DIRECTIONS["UP"]:
-            y -= GAME_CONFIG["GRID_SIZE"]
+            y -= grid_size
         elif self.direction == DIRECTIONS["DOWN"]:
-            y += GAME_CONFIG["GRID_SIZE"]
+            y += grid_size
         elif self.direction == DIRECTIONS["LEFT"]:
-            x -= GAME_CONFIG["GRID_SIZE"]
+            x -= grid_size
         elif self.direction == DIRECTIONS["RIGHT"]:
-            x += GAME_CONFIG["GRID_SIZE"]
+            x += grid_size
 
         self.positions = [(x,y)] + self.positions[:-1]
 

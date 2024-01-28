@@ -5,13 +5,15 @@ import random
 from snake import Snake
 from utils import GAME_CONFIG, DIRECTIONS, fit_the_box
 
+
 class Game:
     def __init__(self):
         self.snake = Snake()
         self.food = self.place_food()
-
+       
     def place_food(self):
-        x,y = random.randint(0,GAME_CONFIG["WIDTH"]), random.randint(0,GAME_CONFIG["HEIGHT"])
+        # the -1 allows the food not to spown outside of the screen
+        x,y = random.randint(0,GAME_CONFIG["WIDTH"]-1), random.randint(0,GAME_CONFIG["HEIGHT"]-1)
         return fit_the_box(x,y)
     
     def render(self, surface):
@@ -31,47 +33,37 @@ class Game:
 
     def game_over(self):
         self.__init__()
-
-    def handle_evets(self):
+    
+    def handle_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+
             elif event.type == pygame.KEYDOWN:
-                if (event.key == pygame.K_UP and
-                   (self.snake.direction != DIRECTIONS["UP"] and self.snake.direction != DIRECTIONS["DOWN"])):
-                    self.snake.direction = DIRECTIONS["UP"]
-                    return
-                elif (event.key == pygame.K_DOWN and
-                     (self.snake.direction != DIRECTIONS["DOWN"] and self.snake.direction != DIRECTIONS["UP"])):
-                    self.snake.direction = DIRECTIONS["DOWN"]
-                    return
-                elif (event.key == pygame.K_LEFT and
-                     (self.snake.direction != DIRECTIONS["RIGHT"] and self.snake.direction != DIRECTIONS["LEFT"])):
-                    self.snake.direction = DIRECTIONS["LEFT"]
-                    return
-                elif (event.key == pygame.K_RIGHT and
-                     (self.snake.direction != DIRECTIONS["LEFT"] and self.snake.direction != DIRECTIONS["RIGHT"])):
-                    self.snake.direction = DIRECTIONS["RIGHT"]
-                    return
-
-                elif (event.key == pygame.K_DELETE):
-                    self.snake.reset()
-                    self.food = self.place_food()
-
+                d = self.snake.direction
+                next_direction = {
+                    pygame.K_DOWN: DIRECTIONS["DOWN"] if d not in {DIRECTIONS["UP"],DIRECTIONS["DOWN"]} else d,
+                    pygame.K_UP: DIRECTIONS["UP"] if d not in {DIRECTIONS["UP"],DIRECTIONS["DOWN"]} else d,
+                    pygame.K_LEFT: DIRECTIONS["LEFT"] if d not in {DIRECTIONS["LEFT"],DIRECTIONS["RIGHT"]} else d,
+                    pygame.K_RIGHT: DIRECTIONS["RIGHT"] if d not in {DIRECTIONS["LEFT"],DIRECTIONS["RIGHT"]} else d
+                }
+                direction = next_direction.get(event.key)
+                self.snake.direction = direction if direction is not None else self.snake.direction
+                pygame.time.delay(1)    
+    
+    
     def update(self):
         self.snake.move()
         head = self.snake.get_head_position()
-
-            
+ 
         # hitting the border
-        if not (GAME_CONFIG['WIDTH'] >= head[0] >= 0 and GAME_CONFIG['HEIGHT'] >= head[1] >= 0):
+        if not (GAME_CONFIG['WIDTH'] > head[0] >= 0 and GAME_CONFIG['HEIGHT'] > head[1] >= 0):
             self.game_over()
 
-        if head in self.snake.positions[2:]:
+        if head in self.snake.get_tail_positions():
             self.game_over()
-        
-            
+          
         # event eating food
         if head == self.food:
             self.snake.length += 1
