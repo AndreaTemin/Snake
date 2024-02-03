@@ -3,8 +3,10 @@ import pygame
 import sys 
 import random
 from snake import Snake
-from utils import GAME_CONFIG, DIRECTIONS, fit_the_box
+from utils import GAME_CONFIG as config, DIRECTIONS as dir, fit_the_box
 
+GAME_CONFIG = config
+DIRECTIONS = dir
 
 class Game:
     def __init__(self):
@@ -12,8 +14,15 @@ class Game:
         self.food = self.place_food()
        
     def place_food(self):
+        width = GAME_CONFIG["WIDTH"]
+        height = GAME_CONFIG["HEIGHT"]
+        # can do better by chosing between all the 
+        
         # the -1 allows the food not to spown outside of the screen
-        x,y = random.randint(0,GAME_CONFIG["WIDTH"]-1), random.randint(0,GAME_CONFIG["HEIGHT"]-1)
+        x,y = random.randint(0,width-1), random.randint(0,height)
+        while fit_the_box(x,y) in self.snake.get_tail_positions() :   
+            x,y = random.randint(0,width-1), random.randint(0,height)
+        
         return fit_the_box(x,y)
     
     def render(self, surface):
@@ -22,8 +31,8 @@ class Game:
                              (*self.snake.get_head_position(), GAME_CONFIG["SNAKE_SIZE"], GAME_CONFIG["SNAKE_SIZE"]))
         # Draw rest of Snake
         for i, pos in enumerate(self.snake.positions[1:]):
-            # this will change the color of the snake gradually
-            color = (5, GAME_CONFIG["SNAKE_COLOR"][1]-i*1, 5)
+            # this will gradually change the color of the snake
+            color = (5+i, GAME_CONFIG["SNAKE_COLOR"][1]-i*2, 5+i)
             pygame.draw.rect(surface, color, # this will change the color of the snake gradually 
                              (*pos, GAME_CONFIG["SNAKE_SIZE"], GAME_CONFIG["SNAKE_SIZE"]))
 
@@ -61,6 +70,7 @@ class Game:
         if not (GAME_CONFIG['WIDTH'] > head[0] >= 0 and GAME_CONFIG['HEIGHT'] > head[1] >= 0):
             self.game_over()
 
+        # eating tail
         if head in self.snake.get_tail_positions():
             self.game_over()
           
