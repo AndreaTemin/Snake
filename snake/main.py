@@ -20,8 +20,7 @@ def main():
         
         pygame.display.update()
 
-        clock.tick(9995)
-        pygame.time.delay(100)
+        clock.tick(10)
         
 
 

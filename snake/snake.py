@@ -10,7 +10,7 @@ RIGHT = 3
 class Snake:
     def __init__(self):
         self.length = 1
-        center = (GAME_CONFIG['WIDTH']//2), (GAME_CONFIG["HEIGHT"] // 2)
+        center = (GAME_CONFIG['WIDTH']//2), (GAME_CONFIG["HEIGHT"]//2)
         self.positions = [fit_the_box(*center)]
         self.direction = random.choice([UP, DOWN, LEFT, RIGHT])  # 0: up, 1:down, 2:left, 3:right
 
